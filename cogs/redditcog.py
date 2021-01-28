@@ -4,39 +4,48 @@ import random
 import praw
 
 from discord.ext import commands, tasks
+from praw.reddit import Submission
 
 bot = commands.Bot
 
-#PRAW setup
-reddit = praw.Reddit(client_id='REDDITCLIENTID',
-                     client_secret='REDDITAPPLICATIONSECRET',
-                     user_agent='REDDITUSERAGENT')
+#Simply a cog dedicated to posting reddit memes through PRAW into a channel.
 
-#Variable to pick posts 1 through 30
-random_post = random.randint(1, 25)
+#PRAW setup
+reddit = praw.Reddit(client_id='CLIENT ID',
+                     client_secret='CLIENT SECRET',
+                     user_agent='USER AGENT')
+
+#Variable to pick posts 1 through 15
+random_post = random.randint(1, 15)
 
 #The selections of subreddits to be picked from random through this variable
-randomsub = [
-reddit.subreddit('dankmemes').hot(),
+randomnormalsub = [
 reddit.subreddit('hmmm').hot(),
 reddit.subreddit('HolUp').hot(),
 reddit.subreddit('blursedimages').hot(),
 reddit.subreddit('okbuddyretard').hot(),
 reddit.subreddit('internet_funeral').hot(),
 reddit.subreddit('surrealmemes').hot(),
-reddit.subreddit('youngpeopleyoutube').hot()
+reddit.subreddit('comedynecromancy').hot(),
+reddit.subreddit('bonehurtingjuice').hot(),
+reddit.subreddit('okbuddyretard').hot(),
+reddit.subreddit('okbuddybaka').hot(),
+reddit.subreddit('WackyTicTacs').hot(),
+reddit.subreddit('wheredidthesodago').hot()
 ]
 
-class reddit(commands.Cog):
+#Class to work the reddit meme command
+class redditposts(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    #Posts a random hot or top pic from a random subreddit
+    #Posts a random hot pic from a random subreddit
     @commands.command(aliases=['MEME', 'm', 'M'])
+    @commands.cooldown(1, 1.5, commands.BucketType.user)
     async def meme(self, ctx):
         for i in range(random_post):
-            submission = next(x for x in (random.choice(randomsub)) if not x.stickied)
-        await ctx.send(submission.url)
+            normalsubmission = next(x for x in (random.choice(randomnormalsub)) if not x.stickied)
+        await ctx.send(normalsubmission.url)
 
 def setup(bot):
-    bot.add_cog(reddit(bot))
+    bot.add_cog(redditposts(bot))
