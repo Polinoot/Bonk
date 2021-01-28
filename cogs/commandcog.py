@@ -50,15 +50,33 @@ class commands(commands.Cog):
             ]
         await ctx.send(random.choice(insults).format(ctx=ctx))
 
-    #Purge command to delete messages
+    #Purge command to delete messages as long as they have manage messages perm
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, amount=1):
         if amount>10:
-            toomuchpurge = await ctx.send('Too much to purge.', delete_after=3)
+            await ctx.send('Too much to purge.', delete_after=3)
         if amount<=10:
             await ctx.channel.purge(limit=amount+1)
             await ctx.send(f'Purged {amount} messages.', delete_after=3)
+
+    #Echos what the issuing person had said as long as they have manage messages perm
+    @commands.command()
+    @commands.has_permissions(manage_messages=True)
+    async def say(self, ctx, *, message=" "):
+        await ctx.send(message)
+
+    #Harassing one of my Discord friends named Ian :)
+    #If anyone knows a better way to combine either string or just more strings in general for the message.content without it looping, let me know
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if message.author == bot.user:
+            return
+        if " ian" in message.content:
+            await message.channel.send('<@267114600682618892>')            
+        if "Ian" in message.content:
+            await message.channel.send('<@267114600682618892>')
+        return
 
 def setup(bot):
     bot.add_cog(commands(bot))
