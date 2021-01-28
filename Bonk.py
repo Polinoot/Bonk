@@ -20,7 +20,8 @@ gamestatus = cycle(['killhumans.exe', 'vibe check', 'sentience.exe', 'gachiGASM'
 #Listed cogs
 my_extensions = [
     'cogs.commandcog',
-    'cogs.redditcog'
+    'cogs.redditcog',
+    'cogs.rpcog'
 ]
 
 #Startup, prints the working directory and log in confirmation
