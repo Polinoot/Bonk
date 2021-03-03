@@ -7,12 +7,21 @@ import random
 from itertools import cycle
 from discord.ext import commands, tasks
 from discord.ext.commands import is_owner
+from dotenv import load_dotenv
+
+#Discord Bot Invite: https://discord.com/api/oauth2/authorize?client_id=644983576697372727&permissions=238415425&scope=bot
 
 #Changes working directory to wherever the main.py is stored
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+#Declaring client
+bot = discord.Client()
+
 #Sets bot prefix
 bot = commands.Bot(command_prefix='.')
+
+#Loads Token from a .env file
+load_dotenv()
 
 #A variable to cycle through a list of statuses displayed on Discord, relating to the change_status function
 gamestatus = cycle(['killhumans.exe', 'vibe check', 'sentience.exe', 'gachiGASM', 'vibe check', 'Billy PepeHands', 'with a hammer', 'real bonking hours', 'vibe check'])
@@ -72,4 +81,4 @@ async def on_command_error(ctx, error):
         await ctx.send(msg)
 
 #Token
-bot.run('TOKEN')
+bot.run(os.getenv('TOKEN'))
