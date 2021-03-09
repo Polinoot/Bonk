@@ -20,6 +20,9 @@ bot = discord.Client()
 #Sets bot prefix
 bot = commands.Bot(command_prefix='.')
 
+#Removes the default help command
+bot.remove_command('help')
+
 #Loads Token from a .env file
 load_dotenv()
 
@@ -64,7 +67,7 @@ async def unload(ctx, extension):
     await ctx.send(f'Unloaded {extension}')
 
 @bot.command()
-@commands.cooldown(1, 10, commands.BucketType.user)
+@is_owner()
 async def reload(ctx, extension):
     bot.reload_extension(f'cogs.{extension}')
     await ctx.send(f'Reloaded {extension}')
