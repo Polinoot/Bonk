@@ -1,21 +1,28 @@
 import discord
 import asyncio
 import random
+import os
 import praw
+from dotenv import load_dotenv
 
 from discord.ext import commands, tasks
 from praw.reddit import Submission
 
 bot = commands.Bot
 
-#Simply a cog dedicated to posting reddit memes through PRAW into a channel.
+load_dotenv()
 
 #PRAW setup
-reddit = praw.Reddit(client_id='CLIENT ID',
-                     client_secret='CLIENT SECRET',
-                     user_agent='USER AGENT')
+redditclientid = (os.getenv('REDDITCLIENTID'))
+clientsecret = (os.getenv('REDDITCLIENTSECRET'))
+useragent = (os.getenv('REDDITUSERAGENT'))
 
-#Variable to pick posts 1 through 15
+reddit = praw.Reddit(client_id = redditclientid,
+                     client_secret = clientsecret,
+                     user_agent = useragent,
+                     check_for_async=False)
+
+#Variable to pick posts 1 through 25
 random_post = random.randint(1, 15)
 
 #The selections of subreddits to be picked from random through this variable
@@ -34,12 +41,11 @@ reddit.subreddit('WackyTicTacs').hot(),
 reddit.subreddit('wheredidthesodago').hot()
 ]
 
-#Class to work the reddit meme command
 class redditposts(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    #Posts a random hot pic from a random subreddit
+    #Posts a random hot() pic from a random subreddit
     @commands.command(aliases=['MEME', 'm', 'M'])
     @commands.cooldown(1, 1.5, commands.BucketType.user)
     async def meme(self, ctx):
