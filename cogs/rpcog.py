@@ -1,26 +1,30 @@
 import discord
 import asyncio
 import random
+import os
 import praw
+from dotenv import load_dotenv
 
 from discord.ext import commands, tasks
 from praw.reddit import Submission
 
 bot = commands.Bot
 
-#This entire cog is dedicated to the same function as redditcog.py, however, selects only from a list of porn subs to post images in an nsfw channel
-#I have attempted to combine this into the redditcog.py but miserably fails at every attempt
-#Plus its easier to reload the cogs individually in case something goes wrong
+load_dotenv()
 
 #PRAW setup
-reddit = praw.Reddit(client_id='CLIENT ID',
-                     client_secret='CLIENT SECRET',
-                     user_agent='USER AGENT')
+redditclientid = (os.getenv('REDDITCLIENTID'))
+clientsecret = (os.getenv('REDDITCLIENTSECRET'))
+useragent = (os.getenv('REDDITUSERAGENT'))
+
+reddit = praw.Reddit(client_id = redditclientid,
+                     client_secret = clientsecret,
+                     user_agent = useragent,
+                     check_for_async=False)
 
 #Variable to pick posts 1 through 25
 random_post = random.randint(1, 15)
 
-#List of porn subs
 randompornsub = [
 reddit.subreddit('rule34').hot(),
 reddit.subreddit('suicidegirls').hot(),
@@ -44,7 +48,6 @@ reddit.subreddit('AsianHottiesGIFS').hot(),
 reddit.subreddit('AsianPorn').hot()
 ]
 
-#Class to work the reddit porn command
 class rp(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
