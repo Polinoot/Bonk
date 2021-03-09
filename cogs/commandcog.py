@@ -16,41 +16,7 @@ class commands(commands.Cog):
 
     #Commands
     
-    #List of insults for users to insult themselves with bot
-    @commands.command(aliases=['bugreport'])
-    async def insultme(self, ctx):
-        insults = [
-            "{ctx.author} is my favorite person besides every other person I’ve ever met.",
-            "I envy people who have never met {ctx.author}",
-            "{ctx.author} is kinda like Rapunzel except instead of letting down their hair, they let down everyone in their life.",
-            "{ctx.author} is impossible to underestimate.",
-            "If {ctx.author} was an inanimate object, they'd be a participation trophy.",
-            "Take my lowest priority and put {ctx.author} beneath it.",
-            "Such a shame {ctx.author}'s mother didn’t swallow them.",
-            "People like {ctx.author} are the reason God doesn’t talk to us anymore.",
-            "If {ctx.author} was a potato they'd be a stupid potato.",
-            "I’d call {ctx.author} a cunt, but they have neither the warmth or the depth.",
-            "{ctx.author}'s birth certificate is an apology letter from the condom factory.",
-            "{ctx.author}'s face is so oily that I’m surprised America hasn’t invaded yet.",
-            "You’re the reason your mom swallows now.",
-            "{ctx.author} could fuck up a wet dream.",
-            "I want you to be the pallbearer at my funeral so you can let me down one last time.",
-            "If you could suck your own dick then you would finally suck at everything.",
-            "You’ll never be half the man your mother was.",
-            "{ctx.author} smells like they wipe back to front.",
-            "I could agree with you, but then we’d both be wrong.",
-            "You are the human embodiment of an eight-dollar haircut.",
-            "You’re about as important as a white crayon.",
-            "You look like you have weiners in your butt.",
-            "The only thing that will ever fuck you is life.",
-            "You’re so inbred you’re a sandwich.",
-            "Fuck your entire fuckin' life, bud.",
-            "Give your balls a tug, ya tit fucker."
-            "you fool. you absolute buffoon. you think you can challenge me in my own realm? you think you can rebel against my authority? you dare come into my house and upturn my dining chairs and spill coffee grounds in my Keurig? you thought you were safe in your chain mail armor behind that screen of yours. I will take these laminate wood floor boards and destroy you. I didn’t want war. but i didn’t start it."
-            ]
-        await ctx.send(random.choice(insults).format(ctx=ctx))
-
-    #Purge command to delete messages as long as they have manage messages perm
+    #Purge command to delete messages
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, amount=1):
@@ -60,23 +26,31 @@ class commands(commands.Cog):
             await ctx.channel.purge(limit=amount+1)
             await ctx.send(f'Purged {amount} messages.', delete_after=3)
 
-    #Echos what the issuing person had said as long as they have manage messages perm
+    #Echos what the issuing person had said
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def say(self, ctx, *, message=" "):
         await ctx.send(message)
 
-    #Harassing one of my Discord friends named Ian :)
-    #If anyone knows a better way to combine either string or just more strings in general for the message.content without it looping, let me know
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.author == bot.user:
-            return
-        if " ian" in message.content:
-            await message.channel.send('<@267114600682618892>')            
-        if "Ian" in message.content:
-            await message.channel.send('<@267114600682618892>')
-        return
+    @commands.command()
+    async def bhb(self, ctx):
+        await ctx.send('Yes, I am on.')
+
+    @commands.command()
+    async def help(self, ctx):
+        author = ctx.message.author
+        embed = discord.Embed(color = discord.Colour.blurple())
+        embed.set_author(name="Here's the list for Bonk's commands!")
+        embed.add_field(name = 'Normal Commands', value = '-----------------------', inline = False)
+        embed.add_field(name = '.purge', value = 'Purges up to 10 messages or less if specified.\n Use as `.purge (amount of messages up to 10)`.', inline = False)
+        embed.add_field(name = '.say', value = 'Repeats whatever you say.\n Beware, this can repeat anything and is locked to only those with the manage messages perm.\n Use as `.say (whatever message you want to repeat)`.', inline = False)
+        embed.add_field(name = '.bhb', value = 'A command used to see if the bot is online.\n Use as `.bhb`.', inline = False)
+        embed.add_field(name = '.help', value = 'This command! You just used it.\n Use as `.help`.', inline = False)
+        embed.add_field(name = 'Reddit Commands', value = '----------------------', inline = False)
+        embed.add_field(name = '.meme (also used as .m, .M, .MEME', value = 'Posts a random meme from Reddit!\n Use as `.meme`.', inline = False)
+        embed.add_field(name = '.porn (also used as .p, .P, .PORN, .sex, .horny)', value = 'Posts a random porn pic from Reddit!\n Use as `.porn`.', inline = False)
+        await author.send(embed=embed)
+        await ctx.send('Check your DMs!')
 
 def setup(bot):
     bot.add_cog(commands(bot))
